@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'chat',
     'drf_spectacular',
     "whitenoise.runserver_nostatic",
-    "django.contrib.staticfiles",
 ]
 
 MIDDLEWARE = [
