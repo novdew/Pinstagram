@@ -5,3 +5,4 @@ djangorestframework
 drf-spectacular
 gunicorn
 Pillow
+whitenoise
