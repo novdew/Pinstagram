@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{% load static %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<title>Pinstagram</title>
+	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/color.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+	<link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+	<script src="https://kit.fontawesome.com/9e5ec7d261.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<!--<div class="se-pre-con"></div>-->
+<div class="theme-layout">
+	
+	<div class="responsive-header">
+		<div class="mh-head first Sticky">
+			<span class="mh-btns-left">
+				<a class="" href="#menu"><i class="fa fa-align-justify"></i></a>
+			</span>
+			<span class="mh-text">
+				<a href="{% url 'home' %}" title=""><img src="{% static 'images/logo.png' %}" alt=""  height="76px" width="76px"></a>
+			</span>
+			<span class="mh-btns-right">
+				<a class="fa fa-sliders" href="#shoppingbag"></a>
+			</span>
+		</div>
+		<div class="mh-head second">
+			<form class="mh-form">
+				<input placeholder="search" />
+				<a href="#/" class="fa fa-search"></a>
+			</form>
+		</div>
+	</div><!-- responsive header -->
+	
+	<div class="topbar stick">
+		<div class="logo">
+			<a title="" href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="" height="65px" width="65px"></a>
+		</div>
+		
+		<div class="top-area">
+			<ul class="main-menu">
+				<li>
+					<a href="{% url 'home' %}" title="">Home</a>
+				</li>
+				<li>
+					<a href="#" title="">Account settings</a>
+					<ul>
+						<li><a href="#####################################" title="">edit account</a></li>
+						<li><a href="#####################################" title="">edit-password</a></li>
+						<li><a href="{% url 'chat_view' %}" title="">Inbox</a></li>
+						<li><a href="{% url 'logout' %}" title="">Log out</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="setting-area">
+				<li>
+					<a href="#" title="Home" data-ripple=""><i class="ti-search"></i></a>
+					<div class="searched">
+						<form method="post" class="form-search">
+							<input type="text" placeholder="Search aaFriend">
+							<button data-ripple><i class="ti-search"></i></button>
+						</form>
+					</div>
+				</li>
+				<li><a href="{% url 'home' %}" title="Home" data-ripple=""><i class="ti-home"></i></a></li>
+				<li>
+					<a href="{% url 'chat_view' %}" title="Messages" data-ripple=""><i class="ti-comment"></i></a>
+				</li>
+			</ul>
+			<div class="user-img">
+				{% if user.profile.imagse %}
+					<img src="{{user.profile.image}}" alt="" height="40" width="40">
+				{% else %}
+					<img src="{% static 'images/default_user.png' %}" alt="" height="40" width="40">
+				{% endif %}
+				<span class="status f-online"></span>
+				<div class="user-setting">
+					<a href="{% url 'myself' %}" title=""><i class="ti-user"></i> view profile</a>
+					<a href="#########################################" title=""><i class="ti-pencil-alt"></i>edit profile</a>
+					<a href="{% url 'logout' %}" title=""><i class="ti-power-off"></i>log out</a>
+				</div>
+			</div>
+			<span class="ti-menu main-menu" data-ripple=""></span>
+		</div>
+	</div><!-- topbar -->
+	<section>
+		<div class="gap gray-bg">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="row" id="page-contents">
+							<div class="col-lg-3">
+								<aside class="sidebar static">
+									<div class="widget">
+										<h4 class="widget-title">Shortcuts</h4>
+										<ul class="naves">
+											<li>
+												<i class="ti-clipboard"></i>
+												<a href="{% url 'home' %}" title="">Home</a>
+											</li>
+											<li>
+												<i class="ti-user"></i>
+												<a href="{% url 'users' %}" title="">users</a>
+											</li>
+											<li>
+												<i class="ti-comments-smiley"></i>
+												<a href="{% url 'chat_view' %}" title="">Messages</a>
+											</li>
+											<li>
+												<i class="ti-power-off"></i>
+												<a href="{% url 'logout' %}" title="">Logout</a>
+											</li>
+										</ul>
+									</div><!-- Shortcuts -->
+									<div class="widget stick-widget">
+										<h4 class="widget-title">Who's follownig</h4>
+										<ul class="followers">
+											{% for follower in followers %}
+											<li>
+												<figure>
+													{% if follower.image %}
+														<img src="{{follower.image.url}}" alt="">
+													{% else %}
+														<img src="{% static 'images/default_user.png' %}" alt="">
+													{% endif %}
+												</figure>
+												<div class="friend-meta">
+													<h4><a href="{% url 'about_user' follower.user.pk %}" title="">{{follower.user.username}}</a></h4>
+													<form action="follow" method="post">{% csrf_token %}
+														<div class="buttons has-addons">
+															{% if follower in user.profile.follows.all %}
+																<button class="" disabled>Follow</button>
+																<a href="{% url 'follow' follower.user.pk %}" title="" name="follow" value="unfollow" class="underline">Unfollow</a>
+															{% else %}
+																<a href="{% url 'follow' follower.user.pk %}" title="" name="follow" value="follow" class="button is-succes">Follow</a>
+																<button class="button is-danger is-static" disabled>Unfollow</button>
+															{% endif %}
+														</div>
+													</form>
+												</div>
+											</li>
+											{% endfor %}
+										</ul>
+									</div><!-- who's following -->
+								</aside>
+							</div><!-- sidebar -->
+
+
+
+							<div class="col-lg-6">
+								<div class="central-meta">
+									<div class="new-postbox">
+										<figure>
+											{% if user.profile.image %}
+												<img src="{{user.profile.image.url}}" alt="">
+											{% else %}
+												<img src="{% static 'images/default_user.png' %}" alt="">
+											{% endif %}
+										</figure>
+										<div class="newpst-input">
+											<form action="" method="POST" enctype="multipart/form-data">
+												{% csrf_token %}
+												<textarea rows="2" placeholder="write something" name="description"></textarea>
+												<!-- <input type="text" name="description" id="input" required="required"> -->
+												<div class="attachments">
+														<i class="fa fa-image"></i>
+														<label class="fileContainer">
+															<input type="file" name="image">
+														</label>
+														<button type="submit">Post</button>
+													</ul>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div><!-- add post new box -->
+
+
+
+
+								<div class="loadMore">
+									{% for objects in posts %}
+									{% for post in objects %}
+								<div class="central-meta item">
+									<div class="user-post">
+										<div class="friend-info">
+											<figure>
+												{% if post.user.image %}
+													<img src="{{post.user.image.url}}" alt="">
+												{% else %}
+													<img src="{% static 'images/default_user.png' %}">
+												{% endif %}
+											</figure>
+											<div class="friend-name">
+												<ins><a href="{% url 'about_user' post.user.pk %}" title="">{{post.user.user.username}}</a></ins>
+												<span>published: {{post.created_date}}</span>
+											</div>
+
+											
+											<div class="post-meta">
+												{% if post.image %}
+												<img src="{{post.image.url}}" alt="">
+												{% endif %}
+												<div class="we-video-info">
+													<ul>
+														<li>
+															<span class="like" data-toggle="tooltip" title="like">
+																<i class="ti-heart"></i>
+																<ins>{{post.total_likes}}</ins>
+															</span>
+														</li>
+														<li class="social-media">
+															<div class="menu">
+															  <div class="btn trigger"><i class="fa fa-share-alt"></i></div>
+															  <div class="rotater">
+																<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-facebook"></i></a></div>
+															  </div>
+															  <div class="rotater">
+																<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-google-plus"></i></a></div>
+															  </div>
+															  <div class="rotater">
+																<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a></div>
+															  </div>
+															  <div class="rotater">
+																<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-instagram"></i></a>
+																</div>
+															  </div>
+																<div class="rotater">
+																<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-dribbble"></i></a>
+																</div>
+															  </div>
+															  <div class="rotater">
+																<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-pinterest"></i></a>
+																</div>
+															  </div>
+
+															</div>
+														</li>
+													</ul>
+												</div>
+
+												<div class="description">
+													<p>
+														{{post.description}}
+													</p>
+												</div>
+
+											</div>
+										</div>
+										<div class="coment-area">
+											<ul class="we-comet">
+												
+												{% for comment in comments %}
+												{% if comment %}
+												<li>
+													<div class="comet-avatar">
+														<img src="{{comment.commenter.image.url}}" alt="">
+													</div>
+													<div class="we-comment">
+														<div class="coment-head">
+															<h5><a href="time-line.html" title="">{{comment.commenter.user.username}}</a></h5>
+															<span>{{comment.created_at}}</span>
+															<a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
+														</div>
+														<p>{{comment.comment}}</p>
+													</div>
+												</li>
+												{% endif %}
+												{% endfor %}
+												
+												<li class="post-comment">
+													<div class="comet-avatar">
+														{% if user.profile.image %}
+															<img src="{{user.profile.image.url}}" alt="">
+														{% else %}
+															<img src="{% static 'images/default_user.png' %}" alt="">
+														{% endif %}
+													</div>
+													<div class="post-comt-box">
+														<form method="post" action="">{% csrf_token %}
+															<textarea name="description" placeholder="Post your comment"></textarea>
+															<button type="submit" style="background-color: black;">Submit</button>
+														</form>	
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+								{% endfor %}
+								</div>
+							</div><!-- centerl meta -->
+
+
+							<div class="col-lg-3">
+								<aside class="sidebar static">
+									<div class="widget">
+										<h4 class="widget-title">Your profile</h4>	
+										<div class="your-page">
+											<figure>
+												{% if user.profile.image %}
+													<img src="{{user.profile.image.url}}" alt="">
+												{% else %}
+													<img src="{% static 'images/default_user.png' %}" alt="">
+												{% endif %}
+											</figure>
+											<div class="page-meta">
+												<a href="#" title="" class="underline">{{user.username}}</a>
+												<span>{{user.profile.firstname}}</span>
+												<span>{{user.profile.lastname}}</span>
+											</div>
+											<div class="page-likes">
+												<ul class="nav nav-tabs likes-btn">
+													<li class="nav-item"><a class="active" href="#link1" data-toggle="tab">Followers</a></li>
+													 <li class="nav-item"><a class="" href="#link2" data-toggle="tab">Follows</a></li>
+												</ul>
+												<!-- Tab panes -->
+												<div class="tab-content">
+												  <div class="tab-pane active fade show " id="link1" >
+													<span><i class="ti-heart"></i></span>
+													  <div class="users-thumb-list">
+														<ul>
+															{% for follower in followers %}
+															<li>
+																<figure>
+																	{% if followe.image %}
+																		<img src="{{follower.image.url}}" alt="">
+																	{% else %}
+																		<img src="{% static 'images/default_user.png' %}">
+																	{% endif %}
+																</figure>
+																<div class="friend-meta">
+																	<h4><a href="{% url 'about_user' follower.pk %}" title="">{{follower.user.username}}</a></h4>
+																	<form action="follow" method="post">{% csrf_token %}
+																	<a href="{% url 'follow' follower.pk %}" title="" name="follow" value="follow" class="underline">Follow</a>
+																	</form>
+																</div>
+															</li>
+															{% endfor %}
+														</ul>
+													  </div>
+												  </div>
+												  <div class="tab-pane fade" id="link2" >
+													  <span><i class="ti-eye"></i></span>
+													  <div class="users-thumb-list">
+														<ul>
+															{% for following in follows %}
+															<li>
+																<figure>
+																	{% if following.image %}
+																		<img src="{{following.image.url}}" alt="">
+																	{% else %}
+																		<img src="{% static 'images/default_user.png' %}">
+																	{% endif %}
+																</figure>
+																<div class="friend-meta">
+																	<h4>
+																		<a href="{% url 'about_user' following.user.pk %}" title="">{{following.user.username}}</a>
+																	</h4>
+																	<form action="follow" method="post">{% csrf_token %}
+																	<a href="{% url 'follow' following.pk %}" title="" name="follow" value="unfollow" class="underline">Unfollow</a>
+																	</form>
+																</div>
+															</li>
+															{% endfor %}
+														</ul>
+													  </div>
+												  </div>
+												</div>
+											</div>
+										</div>
+									</div><!-- page like widget -->
+									<div class="widget friend-list stick-widget">
+										<h4 class="widget-title">Friends</h4>
+										<div id="searchDir"></div>
+										<ul id="people-list" class="friendz-list">
+											{% for following in follows %}
+												<li>
+													<figure>
+														{% if following.image %}
+															<img src="{{following.image.url}}" alt="">
+														{% else %}
+															<img src="{% static 'images/default_user.png' %}">
+														{% endif %}
+													</figure>
+													<div class="friendz-meta">
+														<a href="{% url 'about_user' following.pk %}">{{following.firstname}}</a>
+													</div>
+												</li>
+											{% endfor %}
+										</ul>
+									</div><!-- friends list sidebar -->
+								</aside>
+							</div><!-- sidebar -->
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>	
+	</section>
+
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 col-md-4">
+					<div class="widget">
+						<div class="foot-logo">
+							<div class="logo">
+								<a href="{% url 'home' %}" title=""><img src="{% static 'images/logo.png' %}" alt=""></a>
+							</div>	
+							<p>
+								(It was terrible to attach this damned front, to be honest). Well my name is Pinstagram. (BTW, I am a back-end developer rather than a "front-end")</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-4">
+					<div class="widget">
+						<div class="widget-title"><h4>follow</h4></div>
+						<ul class="list-style">
+							<li><i class="fa fa-instagram"></i><a href="https://www.instagram.com/that_abdulbasit_/" title="">instagram</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer><!-- footer -->
+	<div class="bottombar">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<span class="copyright"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a></span>
+					<i><img src="images/credit-cards.png" alt=""></i>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<div class="side-panel">
+			<h4 class="panel-title">Menu</h4>
+				<div class="setting-row">
+					<span><a href="">profile</a></span>
+				</div>
+				<div class="setting-row">
+					<span><a href="">Log out</a></span>
+				</div>
+		</div><!-- side panel -->		
+	
+	<script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+	<script src="{% static 'js/main.min.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+	<script src="{% static 'js/map-init.js' %}"></script>
+	
+
+</body>	
+
+</html>
