@@ -6,3 +6,4 @@ drf-spectacular
 gunicorn
 Pillow
 whitenoise
+psycopg2
